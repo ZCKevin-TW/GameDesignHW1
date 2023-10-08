@@ -10,6 +10,8 @@ namespace Platformer.Gameplay
     public class PlayerSpawn : Simulation.Event<PlayerSpawn>
     {
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        private GameController gameController = GameController.Instance;
+
 
         public override void Execute()
         {
@@ -24,6 +26,7 @@ namespace Platformer.Gameplay
             player.animator.SetBool("dead", false);
             model.virtualCamera.m_Follow = player.transform;
             model.virtualCamera.m_LookAt = player.transform;
+            gameController.ResetTimer();
             Simulation.Schedule<EnablePlayerInput>(2f);
         }
     }

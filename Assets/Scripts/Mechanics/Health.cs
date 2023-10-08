@@ -2,6 +2,7 @@ using System;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using TMPro;
 
 namespace Platformer.Mechanics
 {
@@ -20,6 +21,7 @@ namespace Platformer.Mechanics
         /// </summary>
         // -1 for killing
         public bool IsAlive => currentHP >= 0;
+        [SerializeField] private TMP_Text healthDisplay;
 
         int currentHP;
 
@@ -68,6 +70,10 @@ namespace Platformer.Mechanics
         {
             Debug.Log("Awaking player with HP " + maxHP);
             currentHP = maxHP;
+        }
+        private void Update()
+        { 
+            if (healthDisplay != null) healthDisplay.SetText(Math.Max(0, currentHP).ToString());
         }
     }
 }

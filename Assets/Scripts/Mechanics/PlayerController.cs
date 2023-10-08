@@ -6,6 +6,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using TMPro;
 
 namespace Platformer.Mechanics
 {
@@ -32,6 +33,7 @@ namespace Platformer.Mechanics
         private bool stopJump;
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
+        public TMP_Text tokenDisplay;
         public Health health;
         public bool controlEnabled = true;
 
@@ -46,6 +48,7 @@ namespace Platformer.Mechanics
         public void OnPlayerTokenCollision()
         {
             ++TokenCount;
+            tokenDisplay.SetText(TokenCount.ToString());
             // Handle the collision event here
             // You can access event.token and event.player to get information about the collision.
         }
@@ -66,7 +69,7 @@ namespace Platformer.Mechanics
             if (controlEnabled)
             {
                 move.x = Input.GetAxisRaw("Horizontal");
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+                if (jumpState == JumpState.Grounded && Input.GetButton("Jump"))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp("Jump"))
                 {

@@ -1,6 +1,9 @@
 using Platformer.Core;
 using Platformer.Model;
 using UnityEngine;
+using TMPro;
+using System;
+
 
 namespace Platformer.Mechanics
 {
@@ -19,6 +22,8 @@ namespace Platformer.Mechanics
         //shared reference when the scene loads, allowing the model to be
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        public TMP_Text timeDisplay;
+        private DateTime roundStartTime;
 
         void OnEnable()
         {
@@ -32,7 +37,23 @@ namespace Platformer.Mechanics
 
         void Update()
         {
-            if (Instance == this) Simulation.Tick();
+            if (Instance == this)
+            {
+                Simulation.Tick();
+                timeDisplay.SetText(CurTime().ToString("D3"));
+            }
+        }
+        private void Awake()
+        {
+            ResetTimer();
+        }
+        public void ResetTimer()
+        {
+            roundStartTime = System.DateTime.UtcNow;
+        }
+        int CurTime()
+        {
+            return (int)(System.DateTime.UtcNow - roundStartTime).TotalSeconds;
         }
     }
 }
