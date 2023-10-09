@@ -9,14 +9,29 @@ namespace Platformer.Mechanics
     /// </summary>
     public class VictoryZone : MonoBehaviour
     {
-        void OnTriggerEnter2D(Collider2D collider)
+        [SerializeField] GameObject Hint;
+        private void Awake()
+        {
+            Hint.SetActive(false); 
+        }
+        private void OnTriggerEnter2D(Collider2D collider)
         {
             var p = collider.gameObject.GetComponent<PlayerController>();
-            if (p != null)
-            {
-                var ev = Schedule<PlayerEnteredVictoryZone>();
-                ev.victoryZone = this;
+            if (p != null) {
+                if (p.KeyDone())
+                {
+                    var ev = Schedule<PlayerEnteredVictoryZone>();
+                    ev.victoryZone = this;
+                } else
+                {
+                    Hint.SetActive(true); 
+                }
             }
+        }
+        private void OnTriggerExit2D(Collider2D collider)
+        {
+            if (!collider.CompareTag("Player")) return;
+            Hint.SetActive(false); 
         }
     }
 }

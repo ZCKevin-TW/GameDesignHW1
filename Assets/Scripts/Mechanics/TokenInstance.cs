@@ -5,6 +5,11 @@ using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
 {
+    public enum TokenTypes
+    {
+        Diamond,
+        Key
+    };
     /// <summary>
     /// This class contains the data required for implementing token collection mechanics.
     /// It does not perform animation of the token, this is handled in a batch by the 
@@ -19,6 +24,9 @@ namespace Platformer.Mechanics
         [Tooltip("List of frames that make up the animation.")]
         public Sprite[] idleAnimation, collectedAnimation;
 
+
+        [SerializeField] private TokenTypes tokenType  = TokenTypes.Diamond;
+
         internal Sprite[] sprites = new Sprite[0];
 
         internal SpriteRenderer _renderer;
@@ -30,6 +38,10 @@ namespace Platformer.Mechanics
         internal int frame = 0;
         internal bool collected = false;
 
+        public TokenTypes GetTokenType()
+        {
+            return tokenType;
+        }
         void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();

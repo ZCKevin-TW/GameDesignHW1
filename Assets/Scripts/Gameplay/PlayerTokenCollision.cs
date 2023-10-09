@@ -18,8 +18,9 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            player.OnPlayerTokenCollision();
-            AudioSource.PlayClipAtPoint(token.tokenCollectAudio, token.transform.position);
+            player.OnPlayerTokenCollision(token.GetTokenType());
+            Debug.Log("Player Token Collision with" + (int)token.GetTokenType());
+            AudioSource.PlayClipAtPoint(token.tokenCollectAudio, token.transform.position, 1.5f);
         }
     }
 }

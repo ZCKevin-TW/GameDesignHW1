@@ -33,7 +33,8 @@ namespace Platformer.Mechanics
         private bool stopJump;
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
-        public TMP_Text tokenDisplay;
+        public TMP_Text tokenDisplay, keyDisplay;
+        
         public Health health;
         public bool controlEnabled = true;
 
@@ -44,11 +45,25 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         // Collecting Items
-        private int TokenCount = 0;
-        public void OnPlayerTokenCollision()
+        private int[] TokenCount = { 0, 0 };
+        public bool KeyDone()
         {
-            ++TokenCount;
-            tokenDisplay.SetText(TokenCount.ToString());
+            return TokenCount[(int)TokenTypes.Key] == 3;
+        }
+        public void OnPlayerTokenCollision(TokenTypes tp)
+        { 
+            ++TokenCount[(int)tp];
+            switch (tp)
+            {
+                case TokenTypes.Diamond:
+                    if (tokenDisplay != null)
+                        tokenDisplay.SetText(TokenCount[(int)tp].ToString());
+                    break;
+                case TokenTypes.Key:
+                    if (keyDisplay != null)
+                        keyDisplay.SetText(TokenCount[(int)tp].ToString() + "/3");
+                    break;
+            }
             // Handle the collision event here
             // You can access event.token and event.player to get information about the collision.
         }
