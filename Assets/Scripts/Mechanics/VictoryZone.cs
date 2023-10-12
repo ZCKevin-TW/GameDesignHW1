@@ -1,6 +1,8 @@
 using Platformer.Gameplay;
 using UnityEngine;
-using static Platformer.Core.Simulation;
+using System.Collections; 
+using static Platformer.Core.Simulation; 
+using UnityEngine.SceneManagement;
 
 namespace Platformer.Mechanics
 {
@@ -22,12 +24,19 @@ namespace Platformer.Mechanics
                 {
                     var ev = Schedule<PlayerEnteredVictoryZone>();
                     ev.victoryZone = this;
+                    StartCoroutine("DelayLoadVictory");
                 } else
                 {
                     Hint.SetActive(true); 
                 }
             }
         }
+        IEnumerator DelayLoadVictory()
+        {
+            yield return new WaitForSeconds(2);
+            SceneManager.LoadScene("Victory");
+        }
+        
         private void OnTriggerExit2D(Collider2D collider)
         {
             if (!collider.CompareTag("Player")) return;
