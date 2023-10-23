@@ -48,6 +48,7 @@ namespace Platformer.Mechanics
             if (randomAnimationStartTime)
                 frame = Random.Range(0, sprites.Length);
             sprites = idleAnimation;
+            if (tokenType == TokenTypes.Key) Debug.Log("Idle animation is set");
         }
 
         void OnTriggerEnter2D(Collider2D other)

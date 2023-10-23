@@ -20,7 +20,7 @@ namespace Platformer.Gameplay
         {
             player.OnPlayerTokenCollision(token.GetTokenType());
             Debug.Log("Player Token Collision with" + (int)token.GetTokenType());
-            AudioSource.PlayClipAtPoint(token.tokenCollectAudio, token.transform.position, 1.5f);
+            AudioSource.PlayClipAtPoint(token.tokenCollectAudio, token.transform.position, 1f);
         }
     }
 }

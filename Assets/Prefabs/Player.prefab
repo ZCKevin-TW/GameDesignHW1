@@ -61,6 +61,8 @@ MonoBehaviour:
   jumpState: 0
   collider2d: {fileID: 0}
   audioSource: {fileID: 0}
+  tokenDisplay: {fileID: 0}
+  keyDisplay: {fileID: 0}
   health: {fileID: 0}
   controlEnabled: 1
 --- !u!212 &212064061491315838
@@ -266,6 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 1
+  healthDisplay: {fileID: 0}
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0

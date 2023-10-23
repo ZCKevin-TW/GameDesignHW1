@@ -10,6 +10,7 @@ public class SwitchToMainScene : MonoBehaviour
     // Update is called once per frame
     public void ToMain()
     {
+        Debug.Log("Button is pressed");
         SceneManager.LoadScene("MainPlay");
     }
 }

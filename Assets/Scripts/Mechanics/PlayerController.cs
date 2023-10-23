@@ -33,10 +33,13 @@ namespace Platformer.Mechanics
         private bool stopJump;
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
-        public TMP_Text tokenDisplay, keyDisplay;
+        public TMP_Text tokenDisplay, keyDisplay, scoreDisplay;
         
         public Health health;
         public bool controlEnabled = true;
+        private bool Invinsible = false;
+        [SerializeField] private DataHolder data;
+        //private int Score = 0;
 
         bool jump;
         Vector2 move;
@@ -48,7 +51,28 @@ namespace Platformer.Mechanics
         private int[] TokenCount = { 0, 0 };
         public bool KeyDone()
         {
-            return TokenCount[(int)TokenTypes.Key] == 3;
+            return TokenCount[(int)TokenTypes.Key] == 2;
+        }
+        public void AddScore(int x)
+        {
+            data.Score += x;
+            if (scoreDisplay != null)
+            {
+                scoreDisplay.SetText(data.Score.ToString()); 
+            }
+        }
+        IEnumerator BecomeInvinsibleForSec(float last_time)
+        {
+            Invinsible = true;
+            yield return new WaitForSeconds(last_time);
+            Invinsible = false;
+        }
+        public void GetHurt()
+        {
+            if (Invinsible) return;
+            StartCoroutine(BecomeInvinsibleForSec(2));
+            animator.SetTrigger("hurt");
+            health.Decrement();
         }
         public void OnPlayerTokenCollision(TokenTypes tp)
         { 
@@ -56,12 +80,13 @@ namespace Platformer.Mechanics
             switch (tp)
             {
                 case TokenTypes.Diamond:
+                    AddScore(100);
                     if (tokenDisplay != null)
                         tokenDisplay.SetText(TokenCount[(int)tp].ToString());
                     break;
                 case TokenTypes.Key:
                     if (keyDisplay != null)
-                        keyDisplay.SetText(TokenCount[(int)tp].ToString() + "/3");
+                        keyDisplay.SetText(TokenCount[(int)tp].ToString() + "/2");
                     break;
             }
             // Handle the collision event here
@@ -77,6 +102,7 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            data.Score = 0;
         }
 
         protected override void Update()

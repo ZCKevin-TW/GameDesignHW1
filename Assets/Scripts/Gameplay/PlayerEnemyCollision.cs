@@ -42,11 +42,14 @@ namespace Platformer.Gameplay
                 {
                     Schedule<EnemyDeath>().enemy = enemy;
                     player.Bounce(2);
+                    player.AddScore(200);
                 }
             }
             else
             {
-                player.health.Decrement(); 
+                //player.health.Decrement(); 
+                player.GetHurt();
+                player.AddScore(-400);
                 // Schedule<PlayerDeath>();
             }
         }
