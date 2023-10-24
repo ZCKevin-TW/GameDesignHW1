@@ -2,40 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Platformer.Gameplay;
+//using static Platformer.Core.Simulation;
+using Platformer.Model;
+using Platformer.Mechanics;
+
+
 public class MaterialManager : MonoBehaviour
 {
     [SerializeField] private Renderer[] allrd;
     private Material[] old_mat;
+    [SerializeField] private SpriteRenderer background;
+    [SerializeField] private Sprite newBackground;
+    private Sprite oldbackground;
     [SerializeField] private GameObject[] keys;
     [SerializeField] private Material target;
     [SerializeField] private Camera maincam;
-
+    private CinemachineCameraShaker sk;
+    private PlayerController player;
+    public Transform tp;
     // Start is called before the first frame update
     void Start()
     {
+        sk = GetComponent<CinemachineCameraShaker>();
+        player = GameObject.FindObjectOfType<PlayerController>();
         old_mat = new Material[allrd.Length];
         for (int i = 0; i < allrd.Length; ++i)
             old_mat[i] = allrd[i].material;
         foreach (var k in keys)
             k.SetActive(false);
-    }
-    public IEnumerator Shake(float duration, float magnitude)
-    {
-        Debug.Log("Shake it");
-        Vector3 oldPos = maincam.transform.localPosition;
-        float elapsedTime = 0f;
-        while (elapsedTime < duration)
-        {
-            float xdiff = Random.Range(-.5f, .5f) * magnitude;
-            float ydiff = Random.Range(-.5f, .5f) * magnitude;
-            maincam.transform.localPosition = oldPos + new Vector3(xdiff, ydiff, 0f);
-            elapsedTime += Time.deltaTime;
-            Debug.Log(ydiff);
-            Debug.Log(maincam.transform.localPosition);
-            yield return null;
-        }
-        Debug.Log("End shake");
-        maincam.transform.localPosition = oldPos;
+        oldbackground = background.sprite;
     }
     // Update is called once per frame
     public void reveal()
@@ -47,7 +43,10 @@ public class MaterialManager : MonoBehaviour
 
         foreach (var k in keys)
             k.SetActive(true);
-        StartCoroutine(Shake(1, 10));
+
+        background.sprite = newBackground;
+        sk.ShakeCamera(1);
+        player.Teleport(tp.position);
     }
     public void hide()
     {
@@ -55,5 +54,8 @@ public class MaterialManager : MonoBehaviour
             allrd[i].material = old_mat[i];
         foreach (var k in keys)
             k.SetActive(false);
+        background.sprite = oldbackground;
+        sk.ShakeCamera(1);
+        player.Teleport(tp.position);
     }
 }
