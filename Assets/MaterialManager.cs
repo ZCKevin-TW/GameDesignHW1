@@ -21,6 +21,7 @@ public class MaterialManager : MonoBehaviour
     }
     public IEnumerator Shake(float duration, float magnitude)
     {
+        Debug.Log("Shake it");
         Vector3 oldPos = maincam.transform.localPosition;
         float elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -29,8 +30,11 @@ public class MaterialManager : MonoBehaviour
             float ydiff = Random.Range(-.5f, .5f) * magnitude;
             maincam.transform.localPosition = oldPos + new Vector3(xdiff, ydiff, 0f);
             elapsedTime += Time.deltaTime;
+            Debug.Log(ydiff);
+            Debug.Log(maincam.transform.localPosition);
             yield return null;
         }
+        Debug.Log("End shake");
         maincam.transform.localPosition = oldPos;
     }
     // Update is called once per frame
@@ -43,7 +47,7 @@ public class MaterialManager : MonoBehaviour
 
         foreach (var k in keys)
             k.SetActive(true);
-        StartCoroutine(Shake(1, 1));
+        StartCoroutine(Shake(1, 10));
     }
     public void hide()
     {
